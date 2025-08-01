@@ -8,7 +8,8 @@ body {
     align-items: center;
     justify-content: flex-start;
     min-height: 100vh;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 h1 {
@@ -210,3 +211,18 @@ select {
     75% { opacity: 1; }
     100% { opacity: 0; }
 }
+#algorithmDescription pre {
+    background-color: #f0f0f0;
+    padding: 10px;
+    overflow-x: auto;
+    border-radius: 5px;
+    text-align: left;
+    font-size: 13px;
+}
+
+#algorithmDescription code {
+    font-family: Consolas, monospace;
+    white-space: pre;
+}
+
+

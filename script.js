@@ -15,6 +15,7 @@ document.getElementById('startStepButton').addEventListener('click', startStepMo
 document.getElementById('speedRange').addEventListener('input', updateSpeedValue);
 document.getElementById('algorithmSelect').addEventListener('change', updateAlgorithmDescription);
 
+
 function generateArray() {
     const input = document.getElementById('arrayInput').value;
     currentArray = input.split(',').map(Number);
@@ -28,11 +29,99 @@ function generateArray() {
 function updateAlgorithmDescription() {
     const algorithm = document.getElementById('algorithmSelect').value;
     const description = {
-        bubbleSort: `<strong>Пузырьковая сортировка</strong>: многократное сравнение соседних элементов и их перестановка при необходимости.`,
-        selectionSort: `<strong>Сортировка выбором</strong>: выбор минимального элемента и его перемещение в начало.`,
-        insertionSort: `<strong>Сортировка вставками</strong>: вставка элемента на нужное место среди отсортированных.`,
-        shakerSort: `<strong>Шейкерная сортировка</strong>: попеременное движение от начала к концу и обратно с перестановками.`
+        bubbleSort: `
+        <strong>Пузырьковая сортировка</strong><br>
+        Многократное прохождение по массиву с попарным сравнением и обменом соседних элементов, если они идут в неправильном порядке.<br>
+        Элементы «всплывают» к концу массива, как пузырьки.<br><br>
+        <em>Сложность:</em> O(n²), лучшее — O(n) (если массив отсортирован).<br><br>
+        <strong>Пример на JavaScript:</strong>
+        <pre><code>function bubbleSort(arr) {
+    for (let i = 0; i < arr.length - 1; i++) {
+        for (let j = 0; j < arr.length - i - 1; j++) {
+            if (arr[j] > arr[j + 1]) {
+                [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
+            }
+        }
+    }
+    return arr;
+}</code></pre>
+    `,
+
+        selectionSort: `
+        <strong>Сортировка выбором</strong><br>
+        На каждом шаге ищется минимальный элемент из неотсортированной части и перемещается в начало.<br>
+        Требует меньше перестановок, но делает много сравнений.<br><br>
+        <em>Сложность:</em> O(n²) всегда.<br><br>
+        <strong>Пример на JavaScript:</strong>
+        <pre><code>function selectionSort(arr) {
+    for (let i = 0; i < arr.length - 1; i++) {
+        let minIndex = i;
+        for (let j = i + 1; j < arr.length; j++) {
+            if (arr[j] < arr[minIndex]) {
+                minIndex = j;
+            }
+        }
+        if (minIndex !== i) {
+            [arr[i], arr[minIndex]] = [arr[minIndex], arr[i]];
+        }
+    }
+    return arr;
+}</code></pre>
+    `,
+
+        insertionSort: `
+        <strong>Сортировка вставками</strong><br>
+        Строит отсортированную часть массива, вставляя в неё каждый следующий элемент на нужное место.<br>
+        Хорошо работает на почти отсортированных массивах.<br><br>
+        <em>Сложность:</em> O(n²), лучшее — O(n).<br><br>
+        <strong>Пример на JavaScript:</strong>
+        <pre><code>function insertionSort(arr) {
+    for (let i = 1; i < arr.length; i++) {
+        let key = arr[i];
+        let j = i - 1;
+        while (j >= 0 && arr[j] > key) {
+            arr[j + 1] = arr[j];
+            j--;
+        }
+        arr[j + 1] = key;
+    }
+    return arr;
+}</code></pre>
+    `,
+
+        shakerSort: `
+        <strong>Шейкерная сортировка</strong><br>
+        Двунаправленный аналог пузырьковой сортировки: сначала проходит слева направо, затем — обратно.<br>
+        Это ускоряет вынос как больших, так и маленьких элементов на нужные позиции.<br><br>
+        <em>Сложность:</em> O(n²), лучшее — O(n).<br><br>
+        <strong>Пример на JavaScript:</strong>
+        <pre><code>function shakerSort(arr) {
+    let left = 0;
+    let right = arr.length - 1;
+    let swapped = true;
+
+    while (swapped) {
+        swapped = false;
+        for (let i = left; i < right; i++) {
+            if (arr[i] > arr[i + 1]) {
+                [arr[i], arr[i + 1]] = [arr[i + 1], arr[i]];
+                swapped = true;
+            }
+        }
+        right--;
+        for (let i = right; i > left; i--) {
+            if (arr[i] < arr[i - 1]) {
+                [arr[i], arr[i - 1]] = [arr[i - 1], arr[i]];
+                swapped = true;
+            }
+        }
+        left++;
+    }
+    return arr;
+}</code></pre>
+    `
     };
+
     document.getElementById('algorithmDescription').innerHTML = description[algorithm] || '';
 }
 
@@ -379,3 +468,6 @@ function nextStep() {
 
     currentStepIndex++;
 }
+window.onload = () => {
+    updateAlgorithmDescription();
+};
